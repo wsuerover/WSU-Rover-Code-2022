@@ -1,0 +1,123 @@
+#!/usr/bin/env python
+import rospy
+from rover_pkg.msg import RoverData
+from rover_pkg.msg import UserInput
+
+global master_rb_fr
+global master_rb_mr
+global master_rb_rr
+global master_rb_fl
+global master_rb_ml
+global master_rb_rl
+
+rb_fr_inv = 1
+rb_mr_inv = 1
+rb_rr_inv = 1
+rb_fl_inv = 1
+rb_ml_inv = -1
+rb_rl_inv = 1
+
+global master_arm_zm
+global master_arm_bm
+global master_arm_am
+global master_arm_wr
+global master_awm_wp
+
+global master_qdcl
+
+def basic_controller(user_data):
+	
+	master_rb_fr = user_data.ljx*rb_fr_inv
+	master_rb_mr = user_data.ljx*rb_mr_inv
+	master_rb_rr = user_data.ljx*rb_rr_inv
+	master_rb_fl = user_data.rjx*rb_fl_inv
+	master_rb_ml = user_data.rjx*rb_ml_inv
+	master_rb_rl = user_data.rjx*rb_rl_inv
+	master_qdcl = user_data.but1
+	
+	rover_data_out = RoverData()	
+	rover_data_out.rb_fr = master_rb_fr
+	rover_data_out.rb_mr = master_rb_mr
+	rover_data_out.rb_rr = master_rb_rr
+	rover_data_out.rb_fl = master_rb_fl
+	rover_data_out.rb_ml = master_rb_ml
+	rover_data_out.rb_rl = master_rb_rl
+	rover_data_out.qdcl = master_qdcl
+	
+
+	RoverDataPublisher = rospy.Publisher('rover_control_stream', RoverData, queue_size=10)
+	RoverDataPublisher.publish(rover_data_out)
+
+def keyboard_controller(user_data):
+	keys_pressed = key_data.keysPressed
+	# use keys_pressed data to update rover data
+	if 'w' in keys_pressed:
+		master_rb_fr = 0.5
+		master_rb_mr = 0.5
+		master_rb_rr = 0.5
+		master_rb_fl = 0.5
+		master_rb_ml = 0.5
+		master_rb_rl = 0.5
+	if 's' in keys_pressed:
+		master_rb_fr = -0.5
+		master_rb_mr = -0.5
+		master_rb_rr = -0.5
+		master_rb_fl = -0.5
+		master_rb_ml = -0.5
+		master_rb_rl = -0.5
+	if 'a' in keys_pressed:
+		master_rb_fr = 0.5
+		master_rb_mr = 0.5
+		master_rb_rr = 0.5
+		master_rb_fl = -0.5
+		master_rb_ml = -0.5
+		master_rb_rl = -0.5
+	if 'd' in keys_pressed:
+		master_rb_fr = -0.5
+		master_rb_mr = -0.5
+		master_rb_rr = -0.5
+		master_rb_fl = 0.5
+		master_rb_ml = 0.5
+		master_rb_rl = 0.5		
+	if len(keys_pressed)==0:
+		master_rb_fr = 0
+		master_rb_mr = 0
+		master_rb_rr = 0
+		master_rb_fl = 0
+		master_rb_ml = 0
+		master_rb_rl = 0	
+	
+	rover_data_out = RoverData()	
+	rover_data_out.rb_fr = master_rb_fr
+	rover_data_out.rb_mr = master_rb_mr
+	rover_data_out.rb_rr = master_rb_rr
+	rover_data_out.rb_fl = master_rb_fl
+	rover_data_out.rb_ml = master_rb_ml
+	rover_data_out.rb_rl = master_rb_rl	
+
+	RoverDataPublisher = rospy.Publisher('rover_control_stream', RoverData, queue_size=10)
+	RoverDataPublisher.publish(rover_data_out)
+
+def inputCallback(user_data):
+
+	if (user_data.controlMode == "basic_controller"):
+		basic_controller(user_data)
+		
+	if (user_data.controlMode == "keyboard_controller"):
+		keyboard_controller(user_data)
+		
+	
+
+def initialize():	
+	rospy.init_node('publisher_node', anonymous=True)	
+	rospy.Subscriber('user_input_stream', UserInput, inputCallback)
+	rospy.loginfo("Rover Controller node started")
+
+	rospy.spin()
+
+if __name__ == '__main__':
+	try:
+		initialize()
+	except rospy.ROSInterruptException:
+		pass
+
