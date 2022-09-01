@@ -1,0 +1,3 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/src/pwm_pca9685"
+}
