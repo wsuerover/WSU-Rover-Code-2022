@@ -7,7 +7,7 @@ rb_fr_inv = -1
 rb_mr_inv = -1
 rb_rr_inv = -1
 rb_fl_inv = 1
-rb_ml_inv = -1
+rb_ml_inv = 1
 rb_rl_inv = 1
 
 motorPWMzero = 1500 # PWM pulse width associated with zero velocity
