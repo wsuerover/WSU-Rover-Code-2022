@@ -15,7 +15,7 @@ motorMinPWMchange = 50
 motorMaxPWMchange = 500
 maxChange = 100
 
-global motorVels;
+global motorVels
 global motorTargetVels
 			#rb_fr, rb_mr, rb_rr, rb_fl, rb_ml, rb_rl
 motorVels = [motorPWMzero,motorPWMzero,motorPWMzero,motorPWMzero,motorPWMzero,motorPWMzero] # PWM values associated with each motor

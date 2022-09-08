@@ -8,15 +8,15 @@ backgroundColor = (20,20,20)
 primaryColor = (255,0,0)
 primaryColorDark = (153,0,0)
 primaryColorLight = (225,51,51)
-borderColor = (150,150,150)
+borderColor = (150,150,150) 
 textColor = (200,200,200)
 fontName = "Times New Roman"
 messageList = ["GUI node started."]
 
 imageRatio = 9/16
 #capture_path = "/home/ds332a/rover_code/src/rover_pkg/src/image_captures/"
-capture_path = 'H:\\Documents\\Code\\rover\\image_captures\\'
-gui_resource_path = 'H:\\Documents\\Code\\rover\\gui_recources\\'
+capture_path = 'H:\\Documents\\Git\\WSU-Rover-Code-2022\\src\\rover_pkg\\src\\image_captures\\'
+gui_resource_path = 'H:\\Documents\\Git\\WSU-Rover-Code-2022\\src\\rover_pkg\\src\\gui_recources\\'
 
 pygame.init()
 
